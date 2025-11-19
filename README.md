@@ -138,22 +138,40 @@ Multiple ML models were trained and evaluated:
 | Random Forest  | Medium  | Medium  | Good baseline                |
 | **XGBoost**    | **Low** | **Low** | **Selected model**           |
 | LSTM           | Medium  | High    | Needs tuning                 |
-| ARIMA          | High    | High    | Not suitable                 |
 
 ---
 
-## 🌐 Streamlit App
+## 📸 Screenshots
 
-The Streamlit app allows the user to:
+Below are some screenshots of the Streamlit Pharma Sales Forecasting App.
 
-### ✔ Select drug  
-### ✔ Select year & month  
-### ✔ Get monthly total prediction  
-### ✔ View weekly breakdown  
-### ✔ View daily forecast line chart  
+### 🏠 Home Dashboard
+![Home Dashboard](dashborad.jpg)
 
-Run the app using:
+---
 
-```bash
-streamlit run app.py
+### 📊 Weekly Forecast Chart
+![Weekly Forecast](weeklysales.jpg)
+
+---
+
+### 📈 Daily Trend Forecast
+![Daily Trend](dailysales.jpg)
+
+---
+
+### 💊 Monthly Sales Comparison (All Drugs)
+![Monthly Comparison](monthlysalesbargraph.jpg)
+
+![Monthly Comparison](monthlysalespie.jpg)
+
+---
+
+### 🔥 Sales Correlation Heatmap
+![Correlation Heatmap](correlationmap.jpg)
+
+---
+
+
+
 

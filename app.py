@@ -60,34 +60,45 @@ st.write(f"Forecasting sales for **all drugs** for **{calendar.month_name[month]
 # -----------------------------
 if run_prediction:
 
-    num_days = calendar.monthrange(year, month)[1]
-    df_all_daily = pd.DataFrame()
-    drug_totals = {}
+    with st.spinner("⏳ Fetching predictions... Please wait..."):
+        
+        num_days = calendar.monthrange(year, month)[1]
+        df_all_daily = pd.DataFrame()
+        drug_totals = {}
 
-    for drug in drug_labels:
-        drug_encoded = le_drug.transform([drug])[0]
+        for drug in drug_labels:
+            drug_encoded = le_drug.transform([drug])[0]
 
-        daily_sales = []
-        for day in range(1, num_days + 1):
-            date = datetime(year, month, day)
-            weekday = date.strftime("%A")
-            weekday_encoded = le_weekday.transform([weekday])[0]
+            daily_sales = []
+            for day in range(1, num_days + 1):
+                date = datetime(year, month, day)
+                weekday = date.strftime("%A")
+                weekday_encoded = le_weekday.transform([weekday])[0]
 
-            daily_sum = 0
-            for hour in range(24):
-                X = np.array([[year, month, hour, weekday_encoded, drug_encoded]])
-                daily_sum += model.predict(X)[0]
+                daily_sum = 0
+                for hour in range(24):
+                    X = np.array([[year, month, hour, weekday_encoded, drug_encoded]])
+                    daily_sum += model.predict(X)[0]
 
-            daily_sales.append(daily_sum)
+                daily_sales.append(daily_sum)
 
-        df_temp = pd.DataFrame({
-            "Day": range(1, num_days + 1),
-            "Predicted_Sales": daily_sales,
-            "Drug": drug
-        })
+            df_temp = pd.DataFrame({
+                "Day": range(1, num_days + 1),
+                "Predicted_Sales": daily_sales,
+                "Drug": drug
+            })
 
-        df_all_daily = pd.concat([df_all_daily, df_temp], ignore_index=True)
-        drug_totals[drug] = sum(daily_sales)
+            df_all_daily = pd.concat([df_all_daily, df_temp], ignore_index=True)
+            drug_totals[drug] = sum(daily_sales)
+
+        # Monthly summary
+        df_monthly = pd.DataFrame({
+            "Drug": list(drug_totals.keys()),
+            "Predicted_Monthly_Quantity": list(drug_totals.values())
+        }).sort_values("Predicted_Monthly_Quantity", ascending=False)
+
+    st.success("✅ Forecast completed successfully!")
+
 
     # -----------------------------
     # Create Monthly Summary Table
